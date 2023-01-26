@@ -4,6 +4,7 @@ import asyncio
 import time
 import discord
 from discord.ext import commands
+os.system("pip install discord.py==1.7.3")
 os.system("clear")
 token = ""
 
