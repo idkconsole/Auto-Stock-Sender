@@ -5,5 +5,6 @@
     "channel_name": "general",
     "message": "i love discord",
     "delay": 5,
-    "dm_reply": true
+    "dm_reply": true,
+    "dm_reply_message": "dont dm me bruhh"
 }
