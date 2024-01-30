@@ -1,0 +1,9 @@
+{
+    "token": "",
+    "prefix": ";",
+    "guild_id": "123456789",
+    "channel_name": "general",
+    "message": "i love discord",
+    "delay": 5,
+    "dm_reply": true
+}
