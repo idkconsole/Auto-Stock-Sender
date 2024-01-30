@@ -1,33 +1,43 @@
 import os
-import sys
-import asyncio
-import time
-import discord
-from discord.ext import commands
 os.system("pip install discord.py==1.7.3")
-os.system("clear")
-token = ""
+import discord
+import json
+import asyncio
+from discord.ext import commands
 
-tecno = commands.Bot(command_prefix=";", self_bot=True)
+with open('config.json') as f:
+    config = json.load(f)
 
-stock = "--------------------------------------------------\n**🤖 Discord Verified Bots 🤖**\n--------------------------------------------------\n**[+] Verified Bots - oge**\n**[+] Verified Bots - oge + intents**\n**[+] Bot With Form**\n**[+] Increasing Your Bot Guilds**\n**[+] Docs To Verify Bot Identity**\n**[+] Mass Bot Adder**\n**[+] Mass Bot Hoster**\n**[+] Mass Guild Botter**\n**[+] Paid Src, Tools, Codes**\n**[+] Auto Stock Sender**\n--------------------------------------------------"
+token = config['token']
+prefix = config['prefix']
+guild_id = int(config['guild_id'])
+channel_name = config['channel_name']
+message = config['message']
+delay = config['delay']
+dm_reply = config['dm_reply']
+dm_reply_message = config['dm_reply_message']
 
-@tecno.event 
+bot = commands.Bot(command_prefix=prefix, intents=discord.Intents.all(), self_bot=True)
+
+@bot.event
 async def on_ready():
-  print(f"Connected To: {tecno.user}")
-  guild = tecno.get_guild(1067517893576769596)
-  while True:
-    await asyncio.sleep(5)
-    for channel in guild.channels:
-      if channel.name == "-":
-        await channel.send(stock)
-        print("[$] Successfully Sent Stock")
-
-@tecno.event
-async def on_message(message):
-    if message.author == tecno.user:
+    print(f"Connected as {bot.user}")
+    guild = bot.get_guild(guild_id)
+    if not guild:
+        print(f"Guild with ID {guild_id} not found.")
         return
-    if message.channel.type == discord.ChannelType.private:
-        await message.channel.send("*Hey, Please Dm Me On `~ Tecno_xD#1603`*\nhttps://discord.com/users/1037585623143428166")
+    while True:
+        await asyncio.sleep(delay)
+        for channel in guild.channels:
+            if isinstance(channel, discord.TextChannel) and channel.name == channel_name:
+                await channel.send(message)
+                print("[$] Successfully Sent Message")
 
-tecno.run(token, bot=False)
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    if dm_reply and message.channel.type == discord.ChannelType.private:
+        await message.channel.send(dm_reply_message)
+
+bot.run(token, bot=False)
